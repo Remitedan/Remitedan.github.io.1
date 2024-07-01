@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.jpg">
+    <title>HYPERQASH</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:rgba(0,20,255,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            display:block;
+            margin: auto;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color:rgba(0,100,255,1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+        }
+
+        nav .brand-name {
+            color: whitesmoke;
+            font-weight: bold;
+            font-size: 20px;
+            margin-right: auto;
+        }
+
+        .menubt {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            .hidemob {
+                display: none;
+            }
+
+            .menubt {
+                display: block;
+                cursor: pointer;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 250px;
+            z-index: 999;
+            background-color: rgba(0, 40, 240, 0.9);
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .sidebar li {
+            width: 100%;
+            text-align: left;
+            padding:20px;
+        }
+
+        .sidebar a {
+            width: 100%;
+            padding: 15px 20px;
+            color:white;
+            font-weight:bold;
+            
+          
+        }
+        .sidebar a:hover{
+          color:blue;
+        }
+
+        /* Container Styles */
+        .container {
+          display:block;
+          margin:auto;
+            max-width:100%;
+            height:100%;
+            margin-top: 100px;
+            padding: 20px;
+            background-image:linear-gradient( lightblue,rgba(80,104,254,0.9));
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: fixed;
+        }
+
+        .header {
+            color: blue;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            margin: 20px 20px 20px 20px;
+            text-align: center;
+            font-family:arial;
+        }
+
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            width: 90%;
+            height: 300px;
+            overflow: hidden;
+            background-color:#ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display:block;
+            margin:auto;
+        }
+        .carousel:hover{
+          box-shadow:0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .carousel-content {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            padding: 40px;
+            text-align: center;
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .carousel-item.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-control {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-control:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+        .indicator {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: gray;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active,
+        .indicator:hover {
+            background-color: black;
+        }
+
+        .mentor-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .mentor-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .carousel {
+                height: 250px;
+            }
+
+            .carousel-item {
+                padding: 20px;
+            }
+        }
+        .btn-create{
+         display:block;
+          background-color:rgba(0,255,0,1);
+          margin:auto;
+          padding:10px;
+          width:300px;
+          border-radius:5px;
+          border:1px solid gray;
+         
+        }
+        .btn-create a{
+          color:white;
+          text-decoration:none;
+          font-size:1.6rem;
+          font-weight:bold;
+        }
+        .welcome-para,.intro-para{
+          background-color:#ddd;
+          padding:10px;
+          display:block;
+          margin:10px;
+        } 
+        .welcome-para:hover{
+          box-shadow:0 0 15px rgba(0,0,0,0.4)
+        }
+        .photo{
+          display:block;
+          margin-bottom:10px;
+          padding:30px;
+          background-color:#ddd;
+         
+        }
+        @media (max-width:600px)
+        {
+          .photo{margin-left:0%
+            width:150px;
+          }
+        }
+        .activate-now{
+          
+         display:block;
+          background: linear-gradient(to right,rgb(241,131,160),rgb(240,82,57));
+          margin:auto;
+          padding:10px;
+          width:300px;
+          border-radius:5px;
+          border:1px solid gray;
+          margin-top:5px;
+         
+        }
+        .activate-now a{
+          color:white;
+          font-size:1.6rem;
+          font-weight:bold;
+          text-decoration:none;
+        }
+        .btn-create a:hover{
+          color:blue;
+        }
+        .moving{
+          font-size:1rem;
+          font-weight:bold;
+          color:rgba(0,255,0,1);
+          padding-top:100px;
+        }
+        .vickyprofile{
+          display:block;
+          width:60px;
+          height:60px;
+          border-radius:50%;
+          margin:auto;
+        }
+        /*contact me button*/
+        .btn {
+  display: block;
+  margin:auto;
+  bottom:0px;
+  margin-top:70px;
+  margin-bottom:20px;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  overflow: hidden;
+  height: 3rem;
+  background-size: 300% 300%;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),  linear-gradient(137.48deg, #ffdb3b 10%,#FE53BB 45%, #8F51EA 67%, #0044ff 87%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+strong {
+  z-index: 2;
+  font-family: 'Avalors Personal Use';
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #FFFFFF;
+  text-shadow: 0 0 4px white;
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.btn:hover #container-stars {
+  z-index: 1;
+  background-color: #212121;
+}
+
+.btn:hover {
+  transform: scale(1.1)
+}
+
+.btn:active {
+  border: double 4px #FE53BB;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.btn:active .circle {
+  background: #FE53BB;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes animStarRotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes gradient_301 {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+        /* Footer Styles */
+        footer {
+            width: 100%;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+        .image{
+          width:220px;
+          display:block;
+          margin:auto;
+          transition:0.8s ease-out;
+        }
+        .image:hover{
+          width:230px;
+         box-shadow:0,4px,14px;
+          
+        }
+        
+
+        
+    </style>
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="sidebar">
+            <li onclick="hideside()"><a style="font-size:30px;">×</a></li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="https://www.hyperqash.com/user/register.php?ref=VickyKE254">CREATE ACCOUNT</a></li>
+            <li><a href="#">GALLERY </a></li>
+            <li><a href="#">ACTIVATION METHOD</a></li>
+            <li><a href="https://wa.me/254115838236?text=Hi%20Vicky%20KE%20i%20want%20to%20join%20HYPERQASH%20.Guide%20me%20plz">CONTACT MENTOR VICKY</a></li>
+        </ul>
+        <ul>
+            <li><a><span class="brand-name">HyperQash</span></a></li>
+            <li class="hidemob"><a href="https://www.hyperqash.com/user/register.php?ref=VickyKE254">CREATE ACCOUNT</a></li>
+            <li class="hidemob"><a href="https://www.hyperqash.com/user/register.php?ref=VickyKE254">HyperQash</a></li>
+            <li class="hidemob"><a href="https://www.hyperqash.com/user/register.php?ref=VickyKE254">ACTIVATE ACCOUNT</a></li>
+            <li class="hidemob"><a href="https://wa.me/254115838236?text=Hi%20Vicky%20KE%20i%20want%20to%20join%20HYPERQASH%20.Guide%20me%20plz">CONTACT</a></li>
+            <li class="hidemob"><a href="#"GALLERY</a></li>
+            <li class="menubt" onclick="sideBar()"><a>
+                <svg xmlns="" width="26" height="26" viewBox="0 0 32 32" stroke="white" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-width="5">
+                    <path d="M 5 5 10 5 20 5 25 5"></path>
+                    <path d="M 5 15 10 15 20 15 25 15"></path>
+                    <path d="M 5 25 10 25 20 25 25 25"></path>
+                </svg>
+            </a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h4 class="header">How HyperQash agencies works?</h4>
+        <div class="description intro-para">
+          <p>
+            HyperQash allows you to earn money by watching YouTube and TikTok videos. This is a great way to make money while enjoying entertaining content.<br>
+            HYPERQASH AGENCIES <br>
+
+1️⃣. Affiliate marketing <br>
+
+2️⃣. Promoted Instagram reels
+<br>
+
+3️⃣. Promoted Tiktok videos
+<br>
+
+4️⃣. Promoted Youtube videos 
+<br>
+
+5️⃣. Netflix Ads
+<br>
+
+6️⃣. Trivia questions 
+<br>
+
+7️⃣. Forex video lessons 
+<br>
+
+8️⃣. Financial Books
+<br>
+
+9️⃣. Welcome bonus (Ksh. 100) at 10 level one active  downlines
+<br>
+        </p>
+        </div>
+        <div class="photo">
+          <img class="image"src="hyperteam.jpg" alt="HYPER QASH">
+          <p>HYPERQASH Team </p>
+          
+        </div>
+        <div class="photo">
+          <img class="image" src="certificate.jpg" alt="certificate.jpg">
+          <p>
+            <span style="color: green;">CERTIFICATE OF REGISTRATION </span><br>
+
+A legit business platform must be registered by the Government 
+
+🥇 HYPERQASH AGENCIES is registered under Reg. No   BN-93SQZV67 pursuant to and in accordance with the provisions of the Registration of Business Names Act.
+
+ Your Trusted and Legitimate online platform.
+          </p>
+        </div>
+        <div class="photo">
+          <img class="image" src="office.jpg" alt="our office">
+          <p>Our physical office</p>
+        </div>
+        <div class="photo">
+          <img class="image" src="activationfee.jpg" alt="activation fee">
+        </div>
+
+        <!-- Carousel Items -->
+        <div class="carousel">
+            <div class="carousel-content">
+                <div class="carousel-item active">
+                    <p>
+               <img class="vickyprofile" src="vickprofile.jpg">Have been making a lot of money from this platform, the real deal have met so far, very legit, you can reach me whatsapp +254115838236”</p>
+                    <p>- <a href="https://wa.me/254115838236?text=Hi%20Vicky%20KE%20i%20want%20to%20join%20HYPERQASH%20.Guide%20me%20plz" class="mentor-link">Mentor Vicky KE</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“This platform has changed my life for the better. Highly recommended!”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor Jane</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“A fantastic service that delivers results. You can contact me at +254792439791.”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor John</a></p>
+                </div>
+                <div class="carousel-item">
+                    <p>“I've never seen anything like it. Truly a game-changer!”</p>
+                    <p>- <a href="#" class="mentor-link">Mentor Lucy</a></p>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+            </div>
+            <div class="carousel-indicators">
+                <span class="indicator active" onclick="currentSlide(0)"></span>
+                <span class="indicator" onclick="currentSlide(1)"></span>
+                <span class="indicator" onclick="currentSlide(2)"></span>
+                <span class="indicator" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+        <div class="welcome-para">
+        <p class="description">Welcome to HYPERQASH,Your primier destination for unlocking online earnings potential.HYPERQASH offers diverse opportunities for everyone to thrive financially</p>
+        </div>
+        
+        
+
+        
+        <button class="btn" type="button"> <a href="https://www.hyperqash.com/user/register.php?ref=VickyKE254"> <strong>CREATE ACCOUNT</strong></a>
+  
+  <div id="container-stars">
+    <div id="stars"></div>
+  </div>
+
+  <div id="glow">
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+  
+</button>
+
+<button style="margin-bottom:0px;" class="container btn-create"> <a href="https://wa.me/254115838236?text=Hi%20Vicky%20KE%20i%20want%20to%20join%20HYPERQASH%20.Guide%20me%20plz">CONTACT FOR MORE</a></button>
+        
+
+          <marquee style="margin-bottom:20px;" class="moving" behavior="smooth" direction="to right">for more info contact mentor <Vee></Vee> whatsapp via:+254115838236</marquee>
+          <footer>
+                <p>&copy; 2024 HYPERQASH. All rights reserved.
+        </footer>
+    
+    
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.carousel-item');
+            const indicators = document.querySelectorAll('.indicator');
+            if (index >= slides.length) {
+                slideIndex = 0;
+            } else if (index < 0) {
+                slideIndex = slides.length - 1;
+            } else {
+                slideIndex = index;
+            }
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                indicators[i].classList.remove('active');
+                if (i === slideIndex) {
+                    slide.classList.add('active');
+                    indicators[i].classList.add('active');
+                }
+            });
+        }
+
+        function moveCarousel(n) {
+            showSlide(slideIndex + n);
+        }
+
+        function currentSlide(n) {
+            showSlide(n);
+        }
+
+        function sideBar() {
+            document.querySelector('.sidebar').style.display = 'flex';
+        }
+
+        function hideside() {
+            document.querySelector('.sidebar').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(slideIndex);
+        });
+    </script>
+</body>
+
+</html>
